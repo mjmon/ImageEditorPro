@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:image_editor_pro/image_editor_pro.dart';
 import 'package:firexcode/firexcode.dart';
+import 'package:image_picker/image_picker.dart';
 
 void main() {
   runApp(MyApp());
@@ -19,42 +20,69 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  File _image;
+  File _pickedImage;
+  File _editedImage;
 
-  Future<void> getimageditor() =>
-      Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return ImageEditorPro(
-          appBarColor: Colors.blue,
-          bottomBarColor: Colors.blue,
-        );
-      })).then((geteditimage) {
-        if (geteditimage != null) {
-          setState(() {
-            _image = geteditimage;
-          });
-        }
-      }).catchError((er) {
-        print(er);
+  Future<void> getimageditor() async {
+    final imageResult =
+        await Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return ImageEditorPro(
+        appBarColor: Colors.blue,
+        bottomBarColor: Colors.blue,
+        passedImage: _pickedImage,
+      );
+    }));
+
+    if (imageResult != null) {
+      setState(() {
+        _editedImage = imageResult;
       });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return condition(
-            condtion: _image == null,
-            isTrue: 'Open Editor'.text().xRaisedButton(
-              onPressed: () {
-                getimageditor();
-              },
-            ).toCenter(),
-            isFalse:
-                _image == null ? Container() : Image.file(_image).toCenter())
-        .xScaffold(
-            appBar: 'Image Editor Pro example'.xTextColorWhite().xAppBar(),
-            floatingActionButton:
-                Icons.add.xIcons().xFloationActiobButton(color: Colors.red));
-  }
-}
+    return Scaffold(
+      appBar: AppBar(title: Text('Image Picker')),
+      body: Container(
+        child: Column(children: [
+          Expanded(
+            child: Container(
+                height: double.infinity,
+                width: double.infinity,
+                alignment: Alignment.center,
+                color: Colors.amber,
+                child: _pickedImage == null
+                    ? Text('No Picked Image')
+                    : Image.file(_pickedImage)),
+          ),
+          Expanded(
+            child: Container(
+              height: double.infinity,
+              width: double.infinity,
+              alignment: Alignment.center,
+              color: Colors.teal,
+              child: _editedImage == null
+                  ? Text('No Edited Image')
+                  : Image.file(_editedImage),
+            ),
+          ),
+        ]),
+      ),
+      floatingActionButton: FloatingActionButton(
+          onPressed: () async {
+            final picker = ImagePicker();
+            final pickedFile =
+                await picker.getImage(source: ImageSource.gallery);
+            setState(() {
+              _pickedImage = File(pickedFile.path);
+            });
 
-Widget condition({bool condtion, Widget isTrue, Widget isFalse}) {
-  return condtion ? isTrue : isFalse;
+            if (_pickedImage != null) {
+              await getimageditor();
+            }
+          },
+          child: Icon(Icons.image_search)),
+    );
+  }
 }

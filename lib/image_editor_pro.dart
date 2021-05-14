@@ -35,7 +35,9 @@ SignatureController _controller =
 class ImageEditorPro extends StatefulWidget {
   final Color appBarColor;
   final Color bottomBarColor;
-  ImageEditorPro({this.appBarColor, this.bottomBarColor});
+  final File passedImage;
+  ImageEditorPro(
+      {this.appBarColor, this.bottomBarColor, @required this.passedImage});
 
   @override
   _ImageEditorProState createState() => _ImageEditorProState();
@@ -93,6 +95,7 @@ class _ImageEditorProState extends State<ImageEditorPro> {
     offsets.clear();
     multiwidget.clear();
     howmuchwidgetis = 0;
+    _image = widget.passedImage;
 
     super.initState();
   }
@@ -250,7 +253,8 @@ class _ImageEditorProState extends State<ImageEditorPro> {
                       .then((binaryIntList) async {
                     //print("Capture Done");
 
-                    final paths = await getDownloadsDirectory();
+                    // final paths = await getDownloadsDirectory();
+                    final paths = await getTemporaryDirectory();
 
                     final file = await File('${paths.path}/' +
                             DateTime.now().toString() +
@@ -259,7 +263,7 @@ class _ImageEditorProState extends State<ImageEditorPro> {
                     file.writeAsBytesSync(binaryIntList);
                     Navigator.pop(context, file);
                   }).catchError((onError) {
-                    print(onError);
+                    print('Done catchError: $onError');
                   });
                 })
           ],
