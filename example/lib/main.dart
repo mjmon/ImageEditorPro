@@ -27,8 +27,8 @@ class _HomePageState extends State<HomePage> {
     final imageResult =
         await Navigator.push(context, MaterialPageRoute(builder: (context) {
       return ImageEditorPro(
-        appBarColor: Colors.blue,
-        bottomBarColor: Colors.blue,
+        appBarColor: Color(0xff11A0BF),
+        bottomBarColor: Color(0xff11A0BF),
         passedImage: _pickedImage,
       );
     }));

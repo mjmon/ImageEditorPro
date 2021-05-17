@@ -182,7 +182,7 @@ class _ImageEditorProState extends State<ImageEditorPro> {
               )
             ],
           )).xContainer(
-        margin: EdgeInsets.all(20),
+        margin: EdgeInsets.all(5),
         color: Colors.white,
         width: width.toDouble(),
         height: height.toDouble(),
@@ -192,6 +192,9 @@ class _ImageEditorProState extends State<ImageEditorPro> {
         key: scaf,
         appBar: AppBar(
           actions: <Widget>[
+            Icon(Icons.crop).xIconButton(onPressed: () {
+              
+            }),
             Icon(FontAwesomeIcons.boxes).xIconButton(onPressed: () {
               showCupertinoDialog(
                   context: context,
@@ -276,7 +279,6 @@ class _ImageEditorProState extends State<ImageEditorPro> {
               ).list(
                 <Widget>[
                   BottomBarContainer(
-                    colors: widget.bottomBarColor,
                     icons: FontAwesomeIcons.brush,
                     ontap: () {
                       // raise the [showDialog] widget
