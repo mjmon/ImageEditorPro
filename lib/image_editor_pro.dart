@@ -198,6 +198,7 @@ class _ImageEditorProState extends State<ImageEditorPro> {
             }),
             Icon(FontAwesomeIcons.boxes).xIconButton(onPressed: () {
               showCupertinoDialog(
+                barrierDismissible: true,
                   context: context,
                   builder: (context) {
                     return AlertDialog(
