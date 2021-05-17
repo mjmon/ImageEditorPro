@@ -183,8 +183,8 @@ class _ImageEditorProState extends State<ImageEditorPro> {
               )
             ],
           )).xContainer(
-        margin: EdgeInsets.all(5),
-        color: Colors.white,
+        // margin: EdgeInsets.all(5),
+        // color: Colors.white,
         width: width.toDouble(),
         height: height.toDouble(),
       ),
