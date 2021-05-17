@@ -149,7 +149,7 @@ packages:
     source: hosted
     version: "6.1.0"
   firexcode:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: firexcode
       url: "https://pub.dartlang.org"
