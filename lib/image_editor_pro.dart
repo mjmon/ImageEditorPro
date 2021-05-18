@@ -277,110 +277,112 @@ class _ImageEditorProState extends State<ImageEditorPro> {
         ),
         bottomNavigationBar: openbottomsheet
             ? Container()
-            : Container(
-                color: widget.bottomBarColor,
-                child: XListView(
-                  scrollDirection: Axis.horizontal,
-                ).list(
-                  <Widget>[
-                    BottomBarContainer(
-                      icons: FontAwesomeIcons.brush,
-                      ontap: () {
-                        // raise the [showDialog] widget
-                        showDialog(
+            : XListView(
+                scrollDirection: Axis.horizontal,
+              ).list(
+                <Widget>[
+                  BottomBarContainer(
+                    color: widget.bottomBarColor,
+                    icons: FontAwesomeIcons.brush,
+                    ontap: () {
+                      // raise the [showDialog] widget
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: 'Pick a color!'.text(),
+                            content: ColorPicker(
+                              pickerColor: pickerColor,
+                              onColorChanged: changeColor,
+                              showLabel: true,
+                              pickerAreaHeightPercent: 0.8,
+                            ).xSingleChildScroolView(),
+                            actions: <Widget>[
+                              'Got it'.text().xFlatButton(
+                                onPressed: () {
+                                  setState(() => currentColor = pickerColor);
+                                  Navigator.of(context).pop();
+                                },
+                              )
+                            ],
+                          );
+                        },
+                      );
+                    },
+                    title: 'Brush',
+                  ),
+                  BottomBarContainer(
+                    color: widget.bottomBarColor,
+                    icons: Icons.text_fields,
+                    ontap: () async {
+                      final value = await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => TextEditorImage()));
+                      if (value.toString().isEmpty) {
+                        print('true');
+                      } else {
+                        type.add(2);
+                        fontsize.add(20);
+                        offsets.add(Offset.zero);
+                        multiwidget.add(value);
+                        howmuchwidgetis++;
+                      }
+                    },
+                    title: 'Text',
+                  ),
+                  BottomBarContainer(
+                    color: widget.bottomBarColor,
+                    icons: FontAwesomeIcons.eraser,
+                    ontap: () {
+                      _controller.clear();
+                      type.clear();
+                      fontsize.clear();
+                      offsets.clear();
+                      multiwidget.clear();
+                      howmuchwidgetis = 0;
+                    },
+                    title: 'Eraser',
+                  ),
+                  BottomBarContainer(
+                    color: widget.bottomBarColor,
+                    icons: Icons.photo,
+                    ontap: () {
+                      showModalBottomSheet(
                           context: context,
                           builder: (context) {
-                            return AlertDialog(
-                              title: 'Pick a color!'.text(),
-                              content: ColorPicker(
-                                pickerColor: pickerColor,
-                                onColorChanged: changeColor,
-                                showLabel: true,
-                                pickerAreaHeightPercent: 0.8,
-                              ).xSingleChildScroolView(),
-                              actions: <Widget>[
-                                'Got it'.text().xFlatButton(
-                                  onPressed: () {
-                                    setState(() => currentColor = pickerColor);
-                                    Navigator.of(context).pop();
-                                  },
-                                )
-                              ],
-                            );
-                          },
-                        );
-                      },
-                      title: 'Brush',
-                    ),
-                    BottomBarContainer(
-                      icons: Icons.text_fields,
-                      ontap: () async {
-                        final value = await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => TextEditorImage()));
-                        if (value.toString().isEmpty) {
-                          print('true');
-                        } else {
-                          type.add(2);
+                            return ColorPiskersSlider();
+                          });
+                    },
+                    title: 'Filter',
+                  ),
+                  BottomBarContainer(
+                    color: widget.bottomBarColor,
+                    icons: FontAwesomeIcons.smile,
+                    ontap: () {
+                      var getemojis = showModalBottomSheet(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Emojies();
+                          });
+                      getemojis.then((value) {
+                        if (value != null) {
+                          type.add(1);
                           fontsize.add(20);
                           offsets.add(Offset.zero);
                           multiwidget.add(value);
                           howmuchwidgetis++;
                         }
-                      },
-                      title: 'Text',
-                    ),
-                    BottomBarContainer(
-                      icons: FontAwesomeIcons.eraser,
-                      ontap: () {
-                        _controller.clear();
-                        type.clear();
-                        fontsize.clear();
-                        offsets.clear();
-                        multiwidget.clear();
-                        howmuchwidgetis = 0;
-                      },
-                      title: 'Eraser',
-                    ),
-                    BottomBarContainer(
-                      icons: Icons.photo,
-                      ontap: () {
-                        showModalBottomSheet(
-                            context: context,
-                            builder: (context) {
-                              return ColorPiskersSlider();
-                            });
-                      },
-                      title: 'Filter',
-                    ),
-                    BottomBarContainer(
-                      icons: FontAwesomeIcons.smile,
-                      ontap: () {
-                        var getemojis = showModalBottomSheet(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return Emojies();
-                            });
-                        getemojis.then((value) {
-                          if (value != null) {
-                            type.add(1);
-                            fontsize.add(20);
-                            offsets.add(Offset.zero);
-                            multiwidget.add(value);
-                            howmuchwidgetis++;
-                          }
-                        });
-                      },
-                      title: 'Emoji',
-                    ),
-                  ],
-                ).xContainer(
-                  padding: EdgeInsets.all(0.0),
-                  blurRadius: 10.9,
-                  shadowColor: widget.bottomBarColor,
-                  height: 70,
-                ),
+                      });
+                    },
+                    title: 'Emoji',
+                  ),
+                ],
+              ).xContainer(
+                padding: EdgeInsets.all(0.0),
+                blurRadius: 10.9,
+                shadowColor: widget.bottomBarColor,
+                height: 70,
               ));
   }
 
