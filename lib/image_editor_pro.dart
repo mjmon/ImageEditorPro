@@ -34,11 +34,10 @@ SignatureController _controller =
     SignatureController(penStrokeWidth: 5, penColor: Colors.green);
 
 class ImageEditorPro extends StatefulWidget {
-  final Color appBarColor;
-  final Color bottomBarColor;
+  final Color themeColor;
   final File passedImage;
   ImageEditorPro(
-      {this.appBarColor, this.bottomBarColor, @required this.passedImage});
+      {this.themeColor, @required this.passedImage});
 
   @override
   _ImageEditorProState createState() => _ImageEditorProState();
@@ -192,7 +191,7 @@ class _ImageEditorProState extends State<ImageEditorPro> {
         backgroundColor: Colors.grey,
         key: scaf,
         appBar: AppBar(
-          backgroundColor: widget.appBarColor,
+          backgroundColor: widget.themeColor,
           foregroundColor: Colors.white,
           actions: <Widget>[
             Icon(Icons.crop).xIconButton(onPressed: () {
@@ -282,7 +281,7 @@ class _ImageEditorProState extends State<ImageEditorPro> {
               ).list(
                 <Widget>[
                   BottomBarContainer(
-                    color: widget.bottomBarColor,
+                    color: widget.themeColor,
                     icons: FontAwesomeIcons.brush,
                     ontap: () {
                       // raise the [showDialog] widget
@@ -312,7 +311,7 @@ class _ImageEditorProState extends State<ImageEditorPro> {
                     title: 'Brush',
                   ),
                   BottomBarContainer(
-                    color: widget.bottomBarColor,
+                    color: widget.themeColor,
                     icons: Icons.text_fields,
                     ontap: () async {
                       final value = await Navigator.push(
@@ -332,7 +331,7 @@ class _ImageEditorProState extends State<ImageEditorPro> {
                     title: 'Text',
                   ),
                   BottomBarContainer(
-                    color: widget.bottomBarColor,
+                    color: widget.themeColor,
                     icons: FontAwesomeIcons.eraser,
                     ontap: () {
                       _controller.clear();
@@ -345,7 +344,7 @@ class _ImageEditorProState extends State<ImageEditorPro> {
                     title: 'Eraser',
                   ),
                   BottomBarContainer(
-                    color: widget.bottomBarColor,
+                    color: widget.themeColor,
                     icons: Icons.photo,
                     ontap: () {
                       showModalBottomSheet(
@@ -357,7 +356,7 @@ class _ImageEditorProState extends State<ImageEditorPro> {
                     title: 'Filter',
                   ),
                   BottomBarContainer(
-                    color: widget.bottomBarColor,
+                    color: widget.themeColor,
                     icons: FontAwesomeIcons.smile,
                     ontap: () {
                       var getemojis = showModalBottomSheet(
@@ -381,7 +380,7 @@ class _ImageEditorProState extends State<ImageEditorPro> {
               ).xContainer(
                 padding: EdgeInsets.all(0.0),
                 blurRadius: 10.9,
-                shadowColor: widget.bottomBarColor,
+                shadowColor: widget.themeColor,
                 height: 70,
               ));
   }
@@ -409,7 +408,7 @@ class _ImageEditorProState extends State<ImageEditorPro> {
               ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Cropper',
-            toolbarColor: Color(0xff11A0BF),
+            toolbarColor: widget.themeColor,
             toolbarWidgetColor: Colors.white,
             initAspectRatio: CropAspectRatioPreset.original,
             lockAspectRatio: false),
