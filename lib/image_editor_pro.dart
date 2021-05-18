@@ -108,6 +108,7 @@ class _ImageEditorProState extends State<ImageEditorPro> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaf,
+      backgroundColor: Colors.grey,
       appBar: AppBar(
         backgroundColor: widget.backgroundColor,
         actions: [
@@ -148,44 +149,170 @@ class _ImageEditorProState extends State<ImageEditorPro> {
                   Text('Done', style: TextStyle(color: widget.foregroundColor)))
         ],
       ),
-      body: Screenshot(
-          controller: screenshotController,
-          child: RepaintBoundary(
-            key: globalKey,
-            child: Stack(children: [
-              if (_image != null)
-                Image.file(
-                  _image,
-                  height: height.toDouble(),
-                  width: width.toDouble(),
-                  fit: BoxFit.cover,
+      body: Center(
+        child: Screenshot(
+            controller: screenshotController,
+            child: RepaintBoundary(
+              key: globalKey,
+              child: Stack(children: [
+                if (_image != null)
+                  Image.file(
+                    _image,
+                    height: height.toDouble(),
+                    width: width.toDouble(),
+                    fit: BoxFit.cover,
+                  ),
+                Container(
+                  padding: EdgeInsets.all(0.0),
+                  child: GestureDetector(
+                      onPanUpdate: (DragUpdateDetails details) {
+                        setState(() {
+                          RenderBox object = context.findRenderObject();
+                          var _localPosition =
+                              object.globalToLocal(details.globalPosition);
+                          _points = List.from(_points)..add(_localPosition);
+                        });
+                      },
+                      onPanEnd: (DragEndDetails details) {
+                        _points.add(null);
+                      },
+                      child: Signat()),
                 ),
-              Container(
-                padding: EdgeInsets.all(0.0),
-                child: GestureDetector(
-                    onPanUpdate: (DragUpdateDetails details) {
-                      setState(() {
-                        RenderBox object = context.findRenderObject();
-                        var _localPosition =
-                            object.globalToLocal(details.globalPosition);
-                        _points = List.from(_points)..add(_localPosition);
-                      });
-                    },
-                    onPanEnd: (DragEndDetails details) {
-                      _points.add(null);
-                    },
-                    child: Signat()),
-              )
-            ]),
-          )),
+                Stack(children: [
+                  ...multiwidget.map((f) {
+                    return type[f.key] == 1
+                        ? EmojiView(
+                            left: offsets[f.key].dx,
+                            top: offsets[f.key].dy,
+                            ontap: () {
+                              scaf.currentState.showBottomSheet((context) {
+                                return Sliders(
+                                  size: f.key,
+                                  sizevalue: fontsize[f.key].toDouble(),
+                                );
+                              });
+                            },
+                            onpanupdate: (details) {
+                              setState(() {
+                                offsets[f.key] = Offset(
+                                    offsets[f.key].dx + details.delta.dx,
+                                    offsets[f.key].dy + details.delta.dy);
+                              });
+                            },
+                            value: f.value.toString(),
+                            fontsize: fontsize[f.key].toDouble(),
+                            align: TextAlign.center,
+                          )
+                        : type[f.key] == 2
+                            ? TextView(
+                                left: offsets[f.key].dx,
+                                top: offsets[f.key].dy,
+                                ontap: () {
+                                  scaf.currentState.showBottomSheet((context) {
+                                    return Sliders(
+                                      size: f.key,
+                                      sizevalue: fontsize[f.key].toDouble(),
+                                    );
+                                  });
+                                },
+                                onpanupdate: (details) {
+                                  setState(() {
+                                    offsets[f.key] = Offset(
+                                        offsets[f.key].dx + details.delta.dx,
+                                        offsets[f.key].dy + details.delta.dy);
+                                  });
+                                },
+                                value: f.value.toString(),
+                                fontsize: fontsize[f.key].toDouble(),
+                                align: TextAlign.center,
+                              )
+                            : Container();
+                  })
+                ])
+              ]),
+            )),
+      ),
       bottomNavigationBar: BottomNavigationBar(
           currentIndex: _activeTab,
           backgroundColor: widget.backgroundColor,
-          onTap: (index) {
-            print('index: index');
+          onTap: (index) async {
+            print('index: $index');
             setState(() {
               _activeTab = index;
             });
+            //BRUSH
+            if (_activeTab == 0) {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: 'Pick a color!'.text(),
+                    content: ColorPicker(
+                      pickerColor: pickerColor,
+                      onColorChanged: changeColor,
+                      showLabel: true,
+                      pickerAreaHeightPercent: 0.8,
+                    ).xSingleChildScroolView(),
+                    actions: <Widget>[
+                      'Got it'.text().xFlatButton(
+                        onPressed: () {
+                          setState(() => currentColor = pickerColor);
+                          Navigator.of(context).pop();
+                        },
+                      )
+                    ],
+                  );
+                },
+              );
+            } 
+            //TEXT
+            else if (_activeTab == 1) {
+              final value = await Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => TextEditorImage()));
+              if (value.toString().isEmpty) {
+                print('true');
+              } else {
+                type.add(2);
+                fontsize.add(20);
+                offsets.add(Offset.zero);
+                multiwidget.add(value);
+                howmuchwidgetis++;
+              }
+            } 
+            //ERASE
+            else if (_activeTab == 2) {
+              _controller.clear();
+              type.clear();
+              fontsize.clear();
+              offsets.clear();
+              multiwidget.clear();
+              howmuchwidgetis = 0;
+            } 
+            // FILTER
+            else if (_activeTab == 3) {
+              showModalBottomSheet(
+                  context: context,
+                  builder: (context) {
+                    return ColorPiskersSlider();
+                  });
+            } 
+            // EMOJI
+            else if (_activeTab == 4) {
+              var getemojis = showModalBottomSheet(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Emojies();
+                  });
+              getemojis.then((value) {
+                if (value != null) {
+                  type.add(1);
+                  fontsize.add(20);
+                  offsets.add(Offset.zero);
+                  multiwidget.add(value);
+                  howmuchwidgetis++;
+                }
+              });
+            }
           },
           items: [
             BottomNavigationBarItem(
