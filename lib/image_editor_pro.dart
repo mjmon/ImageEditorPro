@@ -28,16 +28,19 @@ var height = 300;
 List fontsize = [];
 var howmuchwidgetis = 0;
 List multiwidget = [];
-Color currentcolors = Colors.white;
+Color currentcolors = widget.foregroundColor;
 var opicity = 0.0;
 SignatureController _controller =
     SignatureController(penStrokeWidth: 5, penColor: Colors.green);
 
 class ImageEditorPro extends StatefulWidget {
-  final Color themeColor;
+  final Color backgroundColor;
+  final Color foregroundColor;
   final File passedImage;
   ImageEditorPro(
-      {this.themeColor, @required this.passedImage});
+      {@required this.backgroundColor,
+      @required this.foregroundColor,
+      @required this.passedImage});
 
   @override
   _ImageEditorProState createState() => _ImageEditorProState();
@@ -183,7 +186,7 @@ class _ImageEditorProState extends State<ImageEditorPro> {
             ],
           )).xContainer(
         // margin: EdgeInsets.all(5),
-        // color: Colors.white,
+        // color: widget.foregroundColor,
         width: width.toDouble(),
         height: height.toDouble(),
       ),
@@ -191,13 +194,14 @@ class _ImageEditorProState extends State<ImageEditorPro> {
         backgroundColor: Colors.grey,
         key: scaf,
         appBar: AppBar(
-          backgroundColor: widget.themeColor,
-          foregroundColor: Colors.white,
+          backgroundColor: widget.backgroundColor,
           actions: <Widget>[
-            Icon(Icons.crop).xIconButton(onPressed: () {
+            Icon(Icons.crop, color: widget.foregroundColor).xIconButton(
+                onPressed: () {
               _cropImage();
             }),
-            Icon(FontAwesomeIcons.boxes).xIconButton(onPressed: () {
+            Icon(FontAwesomeIcons.boxes, color: widget.foregroundColor)
+                .xIconButton(onPressed: () {
               showCupertinoDialog(
                   barrierDismissible: true,
                   context: context,
@@ -243,15 +247,17 @@ class _ImageEditorProState extends State<ImageEditorPro> {
                     );
                   });
             }),
-            Icon(Icons.clear).xIconButton(onPressed: () {
+            Icon(Icons.clear, color: widget.foregroundColor).xIconButton(
+                onPressed: () {
               _controller.points.clear();
               setState(() {});
             }),
-            Icon(Icons.camera).xIconButton(onPressed: () {
+            Icon(Icons.camera, color: widget.foregroundColor).xIconButton(
+                onPressed: () {
               bottomsheets();
             }),
             'Done'.text().xFlatButton(
-                primary: Colors.white,
+                primary: widget.foregroundColor,
                 onPressed: () {
                   screenshotController
                       .capture(
@@ -281,8 +287,9 @@ class _ImageEditorProState extends State<ImageEditorPro> {
               ).list(
                 <Widget>[
                   BottomBarContainer(
-                    color: widget.themeColor,
                     icons: FontAwesomeIcons.brush,
+                    bgColor: widget.backgroundColor,
+                    fgColor: widget.foregroundColor,
                     ontap: () {
                       // raise the [showDialog] widget
                       showDialog(
@@ -311,7 +318,8 @@ class _ImageEditorProState extends State<ImageEditorPro> {
                     title: 'Brush',
                   ),
                   BottomBarContainer(
-                    color: widget.themeColor,
+                    bgColor: widget.backgroundColor,
+                    fgColor: widget.foregroundColor,
                     icons: Icons.text_fields,
                     ontap: () async {
                       final value = await Navigator.push(
@@ -331,7 +339,8 @@ class _ImageEditorProState extends State<ImageEditorPro> {
                     title: 'Text',
                   ),
                   BottomBarContainer(
-                    color: widget.themeColor,
+                    bgColor: widget.backgroundColor,
+                    fgColor: widget.foregroundColor,
                     icons: FontAwesomeIcons.eraser,
                     ontap: () {
                       _controller.clear();
@@ -344,7 +353,8 @@ class _ImageEditorProState extends State<ImageEditorPro> {
                     title: 'Eraser',
                   ),
                   BottomBarContainer(
-                    color: widget.themeColor,
+                    bgColor: widget.backgroundColor,
+                    fgColor: widget.foregroundColor,
                     icons: Icons.photo,
                     ontap: () {
                       showModalBottomSheet(
@@ -356,7 +366,8 @@ class _ImageEditorProState extends State<ImageEditorPro> {
                     title: 'Filter',
                   ),
                   BottomBarContainer(
-                    color: widget.themeColor,
+                    bgColor: widget.backgroundColor,
+                    fgColor: widget.foregroundColor,
                     icons: FontAwesomeIcons.smile,
                     ontap: () {
                       var getemojis = showModalBottomSheet(
@@ -380,7 +391,7 @@ class _ImageEditorProState extends State<ImageEditorPro> {
               ).xContainer(
                 padding: EdgeInsets.all(0.0),
                 blurRadius: 10.9,
-                shadowColor: widget.themeColor,
+                shadowColor: widget.backgroundColor,
                 height: 70,
               ));
   }
@@ -408,8 +419,8 @@ class _ImageEditorProState extends State<ImageEditorPro> {
               ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Cropper',
-            toolbarColor: widget.themeColor,
-            toolbarWidgetColor: Colors.white,
+            toolbarColor: widget.backgroundColor,
+            toolbarWidgetColor: widget.foregroundColor,
             initAspectRatio: CropAspectRatioPreset.original,
             lockAspectRatio: false),
         iosUiSettings: IOSUiSettings(
@@ -489,7 +500,7 @@ class _ImageEditorProState extends State<ImageEditorPro> {
           ],
         ).xContainer(
           padding: EdgeInsets.all(0.0),
-          color: Colors.white,
+          color: widget.foregroundColor,
           blurRadius: 10.9,
           shadowColor: Colors.grey[400],
           height: 170,

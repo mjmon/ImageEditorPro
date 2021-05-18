@@ -10,9 +10,7 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: HomePage());
+    return MaterialApp(debugShowCheckedModeBanner: false, home: HomePage());
   }
 }
 
@@ -29,8 +27,10 @@ class _HomePageState extends State<HomePage> {
     final imageResult =
         await Navigator.push(context, MaterialPageRoute(builder: (context) {
       return ImageEditorPro(
-        themeColor:Color(0xff11A0BF),
+        backgroundColor: Color(0xff11A0BF),
+        foregroundColor: Colors.white,
         passedImage: _pickedImage,
+        
       );
     }));
 
