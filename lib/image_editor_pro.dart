@@ -64,7 +64,6 @@ class _ImageEditorProState extends State<ImageEditorPro> {
   Offset offset1 = Offset.zero;
   Offset offset2 = Offset.zero;
   final scaf = GlobalKey<ScaffoldState>();
-  var openbottomsheet = false;
   List<Offset> _points = <Offset>[];
   List type = [];
   List aligment = [];
@@ -104,6 +103,67 @@ class _ImageEditorProState extends State<ImageEditorPro> {
 
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      key: scaf,
+      appBar: AppBar(
+        backgroundColor: widget.backgroundColor,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.crop, color: widget.foregroundColor),
+            onPressed: () {
+              _cropImage();
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.clear, color: widget.foregroundColor),
+            onPressed: () {
+              _controller.points.clear();
+              setState(() {});
+            },
+          ),
+          TextButton(
+              onPressed: () {
+                screenshotController
+                    .capture(
+                        delay: Duration(milliseconds: 500), pixelRatio: 1.5)
+                    .then((binaryIntList) async {
+                  //print("Capture Done");
+
+                  // final paths = await getDownloadsDirectory();
+                  final paths = await getTemporaryDirectory();
+
+                  final file = await File(
+                          '${paths.path}/' + DateTime.now().toString() + '.jpg')
+                      .create();
+                  file.writeAsBytesSync(binaryIntList);
+                  Navigator.pop(context, file);
+                }).catchError((onError) {
+                  print('Done catchError: $onError');
+                });
+              },
+              child:
+                  Text('Done', style: TextStyle(color: widget.foregroundColor)))
+        ],
+      ),
+      body: Container(),
+      bottomNavigationBar: BottomNavigationBar(
+          onTap: (index) {
+            print('index: index');
+          },
+          items: [
+            BottomNavigationBarItem(
+                icon:
+                    Icon(FontAwesomeIcons.brush, color: widget.foregroundColor),
+                label: 'Brush'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.text_fields), label: 'Text'),
+            BottomNavigationBarItem(
+                icon: Icon(FontAwesomeIcons.eraser), label: 'Eraser'),
+            BottomNavigationBarItem(icon: null, label: ''),
+            BottomNavigationBarItem(icon: null, label: '')
+          ]),
+    );
+
     return Screenshot(
       controller: screenshotController,
       child: RepaintBoundary(
@@ -251,10 +311,6 @@ class _ImageEditorProState extends State<ImageEditorPro> {
               _controller.points.clear();
               setState(() {});
             }),
-            Icon(Icons.camera, color: widget.foregroundColor).xIconButton(
-                onPressed: () {
-              bottomsheets();
-            }),
             'Done'.text().xFlatButton(
                 primary: widget.foregroundColor,
                 onPressed: () {
@@ -279,124 +335,120 @@ class _ImageEditorProState extends State<ImageEditorPro> {
                 })
           ],
         ),
-        bottomNavigationBar: openbottomsheet
-            ? Container()
-            : XListView(
-                scrollDirection: Axis.horizontal,
-              ).list(
-                <Widget>[
-                  BottomBarContainer(
-                    icons: FontAwesomeIcons.brush,
-                    bgColor: widget.backgroundColor,
-                    fgColor: widget.foregroundColor,
-                    ontap: () {
-                      // raise the [showDialog] widget
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: 'Pick a color!'.text(),
-                            content: ColorPicker(
-                              pickerColor: pickerColor,
-                              onColorChanged: changeColor,
-                              showLabel: true,
-                              pickerAreaHeightPercent: 0.8,
-                            ).xSingleChildScroolView(),
-                            actions: <Widget>[
-                              'Got it'.text().xFlatButton(
-                                onPressed: () {
-                                  setState(() => currentColor = pickerColor);
-                                  Navigator.of(context).pop();
-                                },
-                              )
-                            ],
-                          );
-                        },
-                      );
-                    },
-                    title: 'Brush',
-                  ),
-                  BottomBarContainer(
-                    bgColor: widget.backgroundColor,
-                    fgColor: widget.foregroundColor,
-                    icons: Icons.text_fields,
-                    ontap: () async {
-                      final value = await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => TextEditorImage()));
-                      if (value.toString().isEmpty) {
-                        print('true');
-                      } else {
-                        type.add(2);
-                        fontsize.add(20);
-                        offsets.add(Offset.zero);
-                        multiwidget.add(value);
-                        howmuchwidgetis++;
-                      }
-                    },
-                    title: 'Text',
-                  ),
-                  BottomBarContainer(
-                    bgColor: widget.backgroundColor,
-                    fgColor: widget.foregroundColor,
-                    icons: FontAwesomeIcons.eraser,
-                    ontap: () {
-                      _controller.clear();
-                      type.clear();
-                      fontsize.clear();
-                      offsets.clear();
-                      multiwidget.clear();
-                      howmuchwidgetis = 0;
-                    },
-                    title: 'Eraser',
-                  ),
-                  BottomBarContainer(
-                    bgColor: widget.backgroundColor,
-                    fgColor: widget.foregroundColor,
-                    icons: Icons.photo,
-                    ontap: () {
-                      showModalBottomSheet(
-                          context: context,
-                          builder: (context) {
-                            return ColorPiskersSlider();
-                          });
-                    },
-                    title: 'Filter',
-                  ),
-                  BottomBarContainer(
-                    bgColor: widget.backgroundColor,
-                    fgColor: widget.foregroundColor,
-                    icons: FontAwesomeIcons.smile,
-                    ontap: () {
-                      var getemojis = showModalBottomSheet(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return Emojies();
-                          });
-                      getemojis.then((value) {
-                        if (value != null) {
-                          type.add(1);
-                          fontsize.add(20);
-                          offsets.add(Offset.zero);
-                          multiwidget.add(value);
-                          howmuchwidgetis++;
-                        }
-                      });
-                    },
-                    title: 'Emoji',
-                  ),
-                ],
-              ).xContainer(
-                padding: EdgeInsets.all(0.0),
-                blurRadius: 10.9,
-                shadowColor: widget.backgroundColor,
-                height: 70,
-              ));
+        bottomNavigationBar: XListView(
+          scrollDirection: Axis.horizontal,
+        ).list(
+          <Widget>[
+            BottomBarContainer(
+              icons: FontAwesomeIcons.brush,
+              bgColor: widget.backgroundColor,
+              fgColor: widget.foregroundColor,
+              ontap: () {
+                // raise the [showDialog] widget
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: 'Pick a color!'.text(),
+                      content: ColorPicker(
+                        pickerColor: pickerColor,
+                        onColorChanged: changeColor,
+                        showLabel: true,
+                        pickerAreaHeightPercent: 0.8,
+                      ).xSingleChildScroolView(),
+                      actions: <Widget>[
+                        'Got it'.text().xFlatButton(
+                          onPressed: () {
+                            setState(() => currentColor = pickerColor);
+                            Navigator.of(context).pop();
+                          },
+                        )
+                      ],
+                    );
+                  },
+                );
+              },
+              title: 'Brush',
+            ),
+            BottomBarContainer(
+              bgColor: widget.backgroundColor,
+              fgColor: widget.foregroundColor,
+              icons: Icons.text_fields,
+              ontap: () async {
+                final value = await Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => TextEditorImage()));
+                if (value.toString().isEmpty) {
+                  print('true');
+                } else {
+                  type.add(2);
+                  fontsize.add(20);
+                  offsets.add(Offset.zero);
+                  multiwidget.add(value);
+                  howmuchwidgetis++;
+                }
+              },
+              title: 'Text',
+            ),
+            BottomBarContainer(
+              bgColor: widget.backgroundColor,
+              fgColor: widget.foregroundColor,
+              icons: FontAwesomeIcons.eraser,
+              ontap: () {
+                _controller.clear();
+                type.clear();
+                fontsize.clear();
+                offsets.clear();
+                multiwidget.clear();
+                howmuchwidgetis = 0;
+              },
+              title: 'Eraser',
+            ),
+            BottomBarContainer(
+              bgColor: widget.backgroundColor,
+              fgColor: widget.foregroundColor,
+              icons: Icons.photo,
+              ontap: () {
+                showModalBottomSheet(
+                    context: context,
+                    builder: (context) {
+                      return ColorPiskersSlider();
+                    });
+              },
+              title: 'Filter',
+            ),
+            BottomBarContainer(
+              bgColor: widget.backgroundColor,
+              fgColor: widget.foregroundColor,
+              icons: FontAwesomeIcons.smile,
+              ontap: () {
+                var getemojis = showModalBottomSheet(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Emojies();
+                    });
+                getemojis.then((value) {
+                  if (value != null) {
+                    type.add(1);
+                    fontsize.add(20);
+                    offsets.add(Offset.zero);
+                    multiwidget.add(value);
+                    howmuchwidgetis++;
+                  }
+                });
+              },
+              title: 'Emoji',
+            ),
+          ],
+        ).xContainer(
+          padding: EdgeInsets.all(0.0),
+          blurRadius: 10.9,
+          shadowColor: widget.backgroundColor,
+          height: 70,
+        ));
   }
 
   Future<Null> _cropImage() async {
-    File croppedFile = await ImageCropper.cropImage(
+    var croppedFile = await ImageCropper.cropImage(
         sourcePath: _image.path,
         aspectRatioPresets: Platform.isAndroid
             ? [
@@ -433,86 +485,6 @@ class _ImageEditorProState extends State<ImageEditorPro> {
   }
 
   final picker = ImagePicker();
-
-  void bottomsheets() {
-    openbottomsheet = true;
-    setState(() {});
-    var future = showModalBottomSheet<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return xColumn.list(
-          [
-            'Select Image Options'.text().xap(value: 20),
-            Divider(
-              height: 1,
-            ),
-            xRowCC.list(
-              [
-                xColumn.list(
-                  [
-                    Icon(Icons.photo_library).xIconButton(onPressed: () async {
-                      var image =
-                          await picker.getImage(source: ImageSource.gallery);
-                      var decodedImage = await decodeImageFromList(
-                          File(image.path).readAsBytesSync());
-
-                      setState(() {
-                        height = decodedImage.height;
-                        width = decodedImage.width;
-                        _image = File(image.path);
-                      });
-                      setState(() => _controller.clear());
-                      Navigator.pop(context);
-                    }),
-                    10.0.sizedWidth(),
-                    'Open Gallery'.text()
-                  ],
-                ).xContainer(onTap: () {}, padding: EdgeInsets.zero),
-                24.0.sizedWidth(),
-                xColumn
-                    .list(
-                      [
-                        Icon(Icons.camera_alt).xIconButton(onPressed: () async {
-                          var image =
-                              await picker.getImage(source: ImageSource.camera);
-                          var decodedImage = await decodeImageFromList(
-                              File(image.path).readAsBytesSync());
-
-                          setState(() {
-                            height = decodedImage.height;
-                            width = decodedImage.width;
-                            _image = File(image.path);
-                          });
-                          setState(() => _controller.clear());
-                          Navigator.pop(context);
-                        }),
-                        10.0.sizedWidth(),
-                        'Open Camera'.text(),
-                      ],
-                    )
-                    .xContainer(padding: EdgeInsets.all(0.0))
-                    .xInkWell(onTap: () {})
-              ],
-            ).xContainer(
-              padding: EdgeInsets.all(20),
-            )
-          ],
-        ).xContainer(
-          padding: EdgeInsets.all(0.0),
-          color: widget.foregroundColor,
-          blurRadius: 10.9,
-          shadowColor: Colors.grey[400],
-          height: 170,
-        );
-      },
-    );
-    future.then((void value) => _closeModal(value));
-  }
-
-  void _closeModal(void value) {
-    openbottomsheet = false;
-    setState(() {});
-  }
 }
 
 class Signat extends StatefulWidget {
@@ -529,8 +501,8 @@ class _SignatState extends State<Signat> {
 
   @override
   Widget build(BuildContext context) {
-    return xListView.list(
-      [
+    return ListView(
+      children: [
         Signature(
             controller: _controller,
             height: height.toDouble(),
