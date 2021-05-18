@@ -28,7 +28,6 @@ var height = 300;
 List fontsize = [];
 var howmuchwidgetis = 0;
 List multiwidget = [];
-Color currentcolors = widget.foregroundColor;
 var opicity = 0.0;
 SignatureController _controller =
     SignatureController(penStrokeWidth: 5, penColor: Colors.green);
