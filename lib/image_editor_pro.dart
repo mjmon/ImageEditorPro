@@ -73,6 +73,9 @@ class _ImageEditorProState extends State<ImageEditorPro> {
   File _image;
   ScreenshotController screenshotController = ScreenshotController();
   Timer timeprediction;
+
+  int _activeTab = 0;
+
   void timers() {
     Timer.periodic(Duration(milliseconds: 10), (tim) {
       setState(() {});
@@ -145,22 +148,69 @@ class _ImageEditorProState extends State<ImageEditorPro> {
                   Text('Done', style: TextStyle(color: widget.foregroundColor)))
         ],
       ),
-      body: Container(),
+      body: Screenshot(
+          controller: screenshotController,
+          child: RepaintBoundary(
+            key: globalKey,
+            child: Stack(children: [
+              if (_image != null)
+                Image.file(
+                  _image,
+                  height: height.toDouble(),
+                  width: width.toDouble(),
+                  fit: BoxFit.cover,
+                ),
+              Container(
+                padding: EdgeInsets.all(0.0),
+                child: GestureDetector(
+                    onPanUpdate: (DragUpdateDetails details) {
+                      setState(() {
+                        RenderBox object = context.findRenderObject();
+                        var _localPosition =
+                            object.globalToLocal(details.globalPosition);
+                        _points = List.from(_points)..add(_localPosition);
+                      });
+                    },
+                    onPanEnd: (DragEndDetails details) {
+                      _points.add(null);
+                    },
+                    child: Signat()),
+              )
+            ]),
+          )),
       bottomNavigationBar: BottomNavigationBar(
+          currentIndex: _activeTab,
+          backgroundColor: widget.backgroundColor,
           onTap: (index) {
             print('index: index');
+            setState(() {
+              _activeTab = index;
+            });
           },
           items: [
             BottomNavigationBarItem(
+                backgroundColor: widget.backgroundColor,
                 icon:
                     Icon(FontAwesomeIcons.brush, color: widget.foregroundColor),
                 label: 'Brush'),
             BottomNavigationBarItem(
-                icon: Icon(Icons.text_fields), label: 'Text'),
+                backgroundColor: widget.backgroundColor,
+                icon: Icon(Icons.text_fields, color: widget.foregroundColor),
+                label: 'Text'),
             BottomNavigationBarItem(
-                icon: Icon(FontAwesomeIcons.eraser), label: 'Eraser'),
-            BottomNavigationBarItem(icon: null, label: ''),
-            BottomNavigationBarItem(icon: null, label: '')
+                backgroundColor: widget.backgroundColor,
+                icon: Icon(FontAwesomeIcons.eraser,
+                    color: widget.foregroundColor),
+                label: 'Eraser'),
+            BottomNavigationBarItem(
+                backgroundColor: widget.backgroundColor,
+                icon: Icon(Icons.photo, color: widget.foregroundColor),
+                label: 'Filter'),
+            BottomNavigationBarItem(
+                backgroundColor: widget.backgroundColor,
+                icon:
+                    Icon(FontAwesomeIcons.smile, color: widget.foregroundColor),
+                label: 'Emoji')
           ]),
     );
 
