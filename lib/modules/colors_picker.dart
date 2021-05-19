@@ -1,5 +1,7 @@
 import 'dart:math';
-import 'package:firexcode/firexcode.dart';
+
+import 'package:flutter/material.dart';
+// import 'package:firexcode/firexcode.dart';
 
 enum PickMode {
   Color,
@@ -115,19 +117,37 @@ class _BarColorPickerState extends State<BarColorPicker> {
       thumbTop = barHeight * percent;
     }
     // build thumb
-    var thumb = XContainer(
-      padding: EdgeInsets.zero,
-      width: thumbRadius * 2,
-      height: thumbRadius * 2,
-      shadowColor: _kThumbShadowColor,
-      spreadRadius: 2,
-      blurRadius: 3,
-      color: widget.thumbColor,
-      rounded: thumbRadius,
-    ).xPositioned(
-      left: thumbLeft,
-      top: thumbTop,
-    );
+    var thumb = Positioned(
+        left: thumbLeft,
+        top: thumbTop,
+        child: Container(
+          padding: EdgeInsets.zero,
+          width: thumbRadius * 2,
+          height: thumbRadius * 2,
+          decoration: BoxDecoration(
+            color: widget.thumbColor,
+            boxShadow: [
+              BoxShadow(
+                color: _kThumbShadowColor,
+                blurRadius: 3,
+                spreadRadius: 2,
+              ),
+            ],
+          ),
+        ));
+    // var thumb = XContainer(
+    //   padding: EdgeInsets.zero,
+    //   width: thumbRadius * 2,
+    //   height: thumbRadius * 2,
+    //   shadowColor: _kThumbShadowColor,
+    //   spreadRadius: 2,
+    //   blurRadius: 3,
+    //   color: widget.thumbColor,
+    //   rounded: thumbRadius,
+    // ).xPositioned(
+    //   left: thumbLeft,
+    //   top: thumbTop,
+    // );
 
     // build frame
     double frameWidth, frameHeight;
@@ -155,22 +175,41 @@ class _BarColorPickerState extends State<BarColorPicker> {
       left = (thumbRadius * 2 - barWidth) / 2;
       top = thumbRadius;
     }
-    var content = XContainerGradient(
-      padding: EdgeInsets.zero,
-      width: barWidth,
-      height: barHeight,
-      rounded: widget.cornerRadius,
-      gradient: gradient,
-      child: ''.text(),
-    ).xPositioned(
+    // var content = XContainerGradient(
+    //   padding: EdgeInsets.zero,
+    //   width: barWidth,
+    //   height: barHeight,
+    //   rounded: widget.cornerRadius,
+    //   gradient: gradient,
+    //   child: ''.text(),
+    // ).xPositioned(
+    //   left: left,
+    //   top: top,
+    // );
+
+    var content = Positioned(
       left: left,
       top: top,
+      child: Container(
+          height: barHeight,
+          width: barWidth,
+          decoration: BoxDecoration(
+              gradient: gradient,
+              borderRadius: BorderRadius.circular(widget.cornerRadius)),
+          child: Text('')),
     );
 
-    return xStack.list([frame, content, thumb]).xGesture(
+    // return xStack.list([frame, content, thumb]).xGesture(
+    //   onPanDown: (details) => handleTouch(details.globalPosition, context),
+    //   onPanStart: (details) => handleTouch(details.globalPosition, context),
+    //   onPanUpdate: (details) => handleTouch(details.globalPosition, context),
+    // );
+
+    return GestureDetector(
       onPanDown: (details) => handleTouch(details.globalPosition, context),
       onPanStart: (details) => handleTouch(details.globalPosition, context),
       onPanUpdate: (details) => handleTouch(details.globalPosition, context),
+      child: Stack(children: [frame, content, thumb]),
     );
   }
 
@@ -270,43 +309,86 @@ class _CircleColorPickerState extends State<CircleColorPicker> {
     final thumbCenterY = radius + thumbDistanceToCenter * cos(thumbRadians);
 
     // build thumb widget
+    // Widget thumb = Positioned(
+    //     child: XContainer(
+    //   padding: EdgeInsets.zero,
+    //   width: thumbRadius * 2,
+    //   height: thumbRadius * 2,
+    //   shadowColor: _kThumbShadowColor,
+    //   spreadRadius: 2,
+    //   blurRadius: 3,
+    //   color: widget.thumbColor,
+    //   rounded: thumbRadius,
+    // ).xPositioned(
+    //   left: thumbCenterX,
+    //   top: thumbCenterY,
+    // ));
+
     Widget thumb = Positioned(
-        child: XContainer(
-      padding: EdgeInsets.zero,
-      width: thumbRadius * 2,
-      height: thumbRadius * 2,
-      shadowColor: _kThumbShadowColor,
-      spreadRadius: 2,
-      blurRadius: 3,
-      color: widget.thumbColor,
-      rounded: thumbRadius,
-    ).xPositioned(
-      left: thumbCenterX,
-      top: thumbCenterY,
-    ));
-    return xStack.list(
-      [
-        SizedBox(
-            width: (radius + thumbRadius) * 2,
-            height: (radius + thumbRadius) * 2),
-        Positioned(
-          left: thumbRadius,
-          top: thumbRadius,
-          child: ''.text().xContainerGradient(
-                padding: EdgeInsets.zero,
-                width: radius * 2,
-                height: radius * 2,
-                rounded: radius,
-                gradient: SweepGradient(colors: colors),
-              ),
-        ),
-        thumb
-      ],
-    ).xGesture(
+        left: thumbCenterX,
+        top: thumbCenterY,
+        child: Container(
+          width: thumbRadius * 2,
+          height: thumbRadius * 2,
+          decoration: BoxDecoration(
+              color: widget.thumbColor,
+              boxShadow: [
+                BoxShadow(
+                    color: _kThumbShadowColor.withOpacity(0.4),
+                    blurRadius: 3,
+                    spreadRadius: 2)
+              ],
+              borderRadius: BorderRadius.circular(thumbRadius)),
+          child: Padding(padding: EdgeInsets.zero),
+        ));
+
+    // return xStack.list(
+    //   [
+    //     SizedBox(
+    //         width: (radius + thumbRadius) * 2,
+    //         height: (radius + thumbRadius) * 2),
+    //     Positioned(
+    //       left: thumbRadius,
+    //       top: thumbRadius,
+    //       child: ''.text().xContainerGradient(
+    //             padding: EdgeInsets.zero,
+    //             width: radius * 2,
+    //             height: radius * 2,
+    //             rounded: radius,
+    //             gradient: SweepGradient(colors: colors),
+    //           ),
+    //     ),
+    //     thumb
+    //   ],
+    // ).xGesture(
+    //   behavior: HitTestBehavior.opaque,
+    //   onPanDown: (details) => handleTouch(details.globalPosition, context),
+    //   onPanStart: (details) => handleTouch(details.globalPosition, context),
+    //   onPanUpdate: (details) => handleTouch(details.globalPosition, context),
+    // );
+
+    return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onPanDown: (details) => handleTouch(details.globalPosition, context),
       onPanStart: (details) => handleTouch(details.globalPosition, context),
       onPanUpdate: (details) => handleTouch(details.globalPosition, context),
+      child: Stack(children: [
+        SizedBox(
+            width: (radius + thumbRadius) * 2,
+            height: (radius + thumbRadius) * 2),
+        Positioned(
+            left: thumbRadius,
+            top: thumbRadius,
+            child: Container(
+              width: radius * 2,
+              height: radius * 2,
+              decoration: BoxDecoration(
+                  gradient: SweepGradient(colors: colors),
+                  borderRadius: BorderRadius.circular(radius)),
+              padding: EdgeInsets.zero,
+            )),
+        thumb
+      ]),
     );
   }
 

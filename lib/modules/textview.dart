@@ -1,4 +1,6 @@
-import 'package:firexcode/firexcode.dart';
+// import 'package:firexcode/firexcode.dart';
+
+import 'package:flutter/material.dart';
 
 class TextView extends StatefulWidget {
   final double left;
@@ -25,19 +27,31 @@ class TextView extends StatefulWidget {
 class _TextViewState extends State<TextView> {
   @override
   Widget build(BuildContext context) {
-    return widget.value
-        .text(
-            textAlign: widget.align,
-            style: TextStyle(
-              fontSize: widget.fontsize,
-            ))
-        .xGesture(
-          onTap: widget.ontap,
-          onPanUpdate: widget.onpanupdate,
-        )
-        .xPositioned(
-          left: widget.left,
-          top: widget.top,
-        );
+    return Positioned(
+        left: widget.left,
+        top: widget.top,
+        child: GestureDetector(
+            onTap: widget.ontap,
+            onPanUpdate: widget.onpanupdate,
+            child: Text(widget.value,
+                textAlign: widget.align,
+                style: TextStyle(
+                  fontSize: widget.fontsize,
+                ))));
+
+    // return widget.value
+    //     .text(
+    //         textAlign: widget.align,
+    //         style: TextStyle(
+    //           fontSize: widget.fontsize,
+    //         ))
+    //     .xGesture(
+    //       onTap: widget.ontap,
+    //       onPanUpdate: widget.onpanupdate,
+    //     )
+    //     .xPositioned(
+    //       left: widget.left,
+    //       top: widget.top,
+    //     );
   }
 }

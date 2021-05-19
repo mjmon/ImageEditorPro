@@ -1,4 +1,6 @@
-import 'package:firexcode/firexcode.dart';
+// import 'package:firexcode/firexcode.dart';
+
+import 'package:flutter/material.dart';
 
 class EmojiView extends StatefulWidget {
   final double left;
@@ -25,19 +27,32 @@ class EmojiView extends StatefulWidget {
 class _EmojiViewState extends State<EmojiView> {
   @override
   Widget build(BuildContext context) {
-    return widget.value
-        .text(
+    return Positioned(
+      left: widget.left,
+      top: widget.top,
+      child: GestureDetector(
+        onTap: widget.ontap,
+        onPanUpdate: widget.onpanupdate,
+        child: Text(widget.value,
             textAlign: widget.align,
             style: TextStyle(
               fontSize: widget.fontsize,
-            ))
-        .xGesture(
-          onTap: widget.ontap,
-          onPanUpdate: widget.onpanupdate,
-        )
-        .xPositioned(
-          left: widget.left,
-          top: widget.top,
-        );
+            )),
+      ),
+    );
+    // return widget.value
+    //     .text(
+    //         textAlign: widget.align,
+    //         style: TextStyle(
+    //           fontSize: widget.fontsize,
+    //         ))
+    //     .xGesture(
+    //       onTap: widget.ontap,
+    //       onPanUpdate: widget.onpanupdate,
+    //     )
+    //     .xPositioned(
+    //       left: widget.left,
+    //       top: widget.top,
+    //     );
   }
 }
