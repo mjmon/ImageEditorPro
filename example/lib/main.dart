@@ -30,7 +30,6 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Color(0xff11A0BF),
         foregroundColor: Colors.white,
         passedImage: _pickedImage,
-        
       );
     }));
 
@@ -75,9 +74,12 @@ class _HomePageState extends State<HomePage> {
             final picker = ImagePicker();
             final pickedFile =
                 await picker.getImage(source: ImageSource.gallery);
-            setState(() {
-              _pickedImage = File(pickedFile.path);
-            });
+
+            if (pickedFile != null) {
+              setState(() {
+                _pickedImage = File(pickedFile.path);
+              });
+            }
 
             if (_pickedImage != null) {
               await getimageditor();
