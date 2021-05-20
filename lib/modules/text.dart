@@ -43,7 +43,7 @@ class _TextEditorImageState extends State<TextEditorImage> {
           keyboardType: TextInputType.multiline,
           maxLines: 99999,
           style: TextStyle(
-            color: Colors.white,
+            color: Colors.red,
           ),
           autofocus: true,
         )
