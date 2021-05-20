@@ -2,8 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-// import 'package:firexcode/firexcode.dart';
-
 class ImageView extends StatefulWidget {
   final File file;
 
@@ -18,6 +16,5 @@ class _ImageViewState extends State<ImageView> {
     return Scaffold(
       body: Center(child: Image.file(widget.file)),
     );
-    // return Image.file(widget.file).xCenter().xScaffold();
   }
 }

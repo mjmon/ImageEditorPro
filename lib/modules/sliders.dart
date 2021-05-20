@@ -1,4 +1,3 @@
-// import 'package:firexcode/firexcode.dart';
 
 import 'package:flutter/material.dart';
 
@@ -50,29 +49,5 @@ class _SlidersState extends State<Sliders> {
         ],
       ),
     );
-    // return xColumn.list(
-    //   [
-    //     'Slider Size'.text().xap(value: 20),
-    //     Divider(
-    //       height: 1,
-    //     ),
-    //     Slider(
-    //         value: slider,
-    //         min: 0.0,
-    //         max: 100.0,
-    //         onChangeEnd: (v) {
-    //           setState(() {
-    //             fontsize[widget.size] = v.toInt();
-    //           });
-    //         },
-    //         onChanged: (v) {
-    //           setState(() {
-    //             slider = v;
-    //             print(v.toInt());
-    //             fontsize[widget.size] = v.toInt();
-    //           });
-    //         }),
-    //   ],
-    // ).xContainer(height: 120, padding: EdgeInsets.all(10.0));
   }
 }

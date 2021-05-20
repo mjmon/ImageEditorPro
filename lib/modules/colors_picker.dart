@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-// import 'package:firexcode/firexcode.dart';
 
 enum PickMode {
   Color,
@@ -175,17 +174,7 @@ class _BarColorPickerState extends State<BarColorPicker> {
       left = (thumbRadius * 2 - barWidth) / 2;
       top = thumbRadius;
     }
-    // var content = XContainerGradient(
-    //   padding: EdgeInsets.zero,
-    //   width: barWidth,
-    //   height: barHeight,
-    //   rounded: widget.cornerRadius,
-    //   gradient: gradient,
-    //   child: ''.text(),
-    // ).xPositioned(
-    //   left: left,
-    //   top: top,
-    // );
+
 
     var content = Positioned(
       left: left,
@@ -198,12 +187,6 @@ class _BarColorPickerState extends State<BarColorPicker> {
               borderRadius: BorderRadius.circular(widget.cornerRadius)),
           child: Text('')),
     );
-
-    // return xStack.list([frame, content, thumb]).xGesture(
-    //   onPanDown: (details) => handleTouch(details.globalPosition, context),
-    //   onPanStart: (details) => handleTouch(details.globalPosition, context),
-    //   onPanUpdate: (details) => handleTouch(details.globalPosition, context),
-    // );
 
     return GestureDetector(
       onPanDown: (details) => handleTouch(details.globalPosition, context),
@@ -308,21 +291,6 @@ class _CircleColorPickerState extends State<CircleColorPicker> {
     final thumbCenterX = radius + thumbDistanceToCenter * sin(thumbRadians);
     final thumbCenterY = radius + thumbDistanceToCenter * cos(thumbRadians);
 
-    // build thumb widget
-    // Widget thumb = Positioned(
-    //     child: XContainer(
-    //   padding: EdgeInsets.zero,
-    //   width: thumbRadius * 2,
-    //   height: thumbRadius * 2,
-    //   shadowColor: _kThumbShadowColor,
-    //   spreadRadius: 2,
-    //   blurRadius: 3,
-    //   color: widget.thumbColor,
-    //   rounded: thumbRadius,
-    // ).xPositioned(
-    //   left: thumbCenterX,
-    //   top: thumbCenterY,
-    // ));
 
     Widget thumb = Positioned(
         left: thumbCenterX,
@@ -342,30 +310,6 @@ class _CircleColorPickerState extends State<CircleColorPicker> {
           child: Padding(padding: EdgeInsets.zero),
         ));
 
-    // return xStack.list(
-    //   [
-    //     SizedBox(
-    //         width: (radius + thumbRadius) * 2,
-    //         height: (radius + thumbRadius) * 2),
-    //     Positioned(
-    //       left: thumbRadius,
-    //       top: thumbRadius,
-    //       child: ''.text().xContainerGradient(
-    //             padding: EdgeInsets.zero,
-    //             width: radius * 2,
-    //             height: radius * 2,
-    //             rounded: radius,
-    //             gradient: SweepGradient(colors: colors),
-    //           ),
-    //     ),
-    //     thumb
-    //   ],
-    // ).xGesture(
-    //   behavior: HitTestBehavior.opaque,
-    //   onPanDown: (details) => handleTouch(details.globalPosition, context),
-    //   onPanStart: (details) => handleTouch(details.globalPosition, context),
-    //   onPanUpdate: (details) => handleTouch(details.globalPosition, context),
-    // );
 
     return GestureDetector(
       behavior: HitTestBehavior.opaque,

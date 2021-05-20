@@ -1,5 +1,3 @@
-// import 'package:firexcode/firexcode.dart';
-
 import 'package:flutter/material.dart';
 
 class EmojiView extends StatefulWidget {
@@ -40,19 +38,5 @@ class _EmojiViewState extends State<EmojiView> {
             )),
       ),
     );
-    // return widget.value
-    //     .text(
-    //         textAlign: widget.align,
-    //         style: TextStyle(
-    //           fontSize: widget.fontsize,
-    //         ))
-    //     .xGesture(
-    //       onTap: widget.ontap,
-    //       onPanUpdate: widget.onpanupdate,
-    //     )
-    //     .xPositioned(
-    //       left: widget.left,
-    //       top: widget.top,
-    //     );
   }
 }

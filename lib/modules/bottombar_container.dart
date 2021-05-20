@@ -1,4 +1,3 @@
-// import 'package:firexcode/firexcode.dart';
 
 import 'package:flutter/material.dart';
 
@@ -33,16 +32,5 @@ class BottomBarContainer extends StatelessWidget {
                   ],
                 ))));
 
-    // return xColumnCC
-    //     .list([
-    //       icons.xIcons(color: fgColor ?? Colors.white),
-    //       4.0.sizedHeight(),
-    //       title.xText(color: fgColor ?? Colors.white)
-    //     ])
-    //     .xInkWell(onTap: ontap)
-    //     .xMaterial(
-    //       color: bgColor ?? Colors.black87,
-    //     )
-    //     .xContainer(padding: EdgeInsets.all(0.0), width: xwidth(context) / 5);
   }
 }

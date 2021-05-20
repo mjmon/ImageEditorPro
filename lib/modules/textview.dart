@@ -1,4 +1,3 @@
-// import 'package:firexcode/firexcode.dart';
 
 import 'package:flutter/material.dart';
 
@@ -38,20 +37,5 @@ class _TextViewState extends State<TextView> {
                 style: TextStyle(
                   fontSize: widget.fontsize,
                 ))));
-
-    // return widget.value
-    //     .text(
-    //         textAlign: widget.align,
-    //         style: TextStyle(
-    //           fontSize: widget.fontsize,
-    //         ))
-    //     .xGesture(
-    //       onTap: widget.ontap,
-    //       onPanUpdate: widget.onpanupdate,
-    //     )
-    //     .xPositioned(
-    //       left: widget.left,
-    //       top: widget.top,
-    //     );
   }
 }
