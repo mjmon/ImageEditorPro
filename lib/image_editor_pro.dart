@@ -153,7 +153,7 @@ class _ImageEditorProState extends State<ImageEditorPro> {
             controller: screenshotController,
             child: RepaintBoundary(
               key: globalKey,
-              child: Stack(children: [
+              child: Stack(alignment: AlignmentDirectional.center, children: [
                 if (_image != null)
                   Image.file(
                     _image,
