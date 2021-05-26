@@ -106,6 +106,7 @@ class _ImageEditorProState extends State<ImageEditorPro> {
       key: scaf,
       backgroundColor: Colors.grey,
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: widget.backgroundColor,
         actions: [
           IconButton(
