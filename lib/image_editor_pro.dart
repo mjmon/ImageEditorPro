@@ -5,13 +5,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:image_editor_pro/modules/bottombar_container.dart';
-import 'package:image_editor_pro/modules/color_piskers_slider.dart';
 import 'package:image_editor_pro/modules/sliders.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_editor_pro/modules/all_emojies.dart';
 import 'package:image_editor_pro/modules/emoji.dart';
-import 'package:image_editor_pro/modules/text.dart';
 import 'package:image_editor_pro/modules/textview.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
@@ -21,8 +18,8 @@ import 'package:adaptive_dialog/adaptive_dialog.dart';
 
 TextEditingController heightcontroler = TextEditingController();
 TextEditingController widthcontroler = TextEditingController();
-var width = 300;
-var height = 300;
+var width = 400;
+var height = 400;
 
 List fontsize = [];
 var howmuchwidgetis = 0;
