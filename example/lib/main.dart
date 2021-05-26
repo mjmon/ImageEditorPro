@@ -58,14 +58,25 @@ class _HomePageState extends State<HomePage> {
           ),
           Expanded(
             child: Container(
-              height: double.infinity,
-              width: double.infinity,
-              alignment: Alignment.center,
-              color: Colors.teal,
-              child: _editedImage == null
-                  ? Text('No Edited Image')
-                  : Image.file(_editedImage),
-            ),
+                height: double.infinity,
+                width: double.infinity,
+                alignment: Alignment.center,
+                color: Colors.teal,
+                child: _editedImage == null
+                    ? Text('No Edited Image')
+                    :
+                    // Image.file(_editedImage),
+                    CircleAvatar(
+                        radius: 60.0,
+                        backgroundColor: Colors.transparent,
+                        child: ClipOval(
+                          child: Image.file(
+                            _editedImage,
+                            fit: BoxFit.cover,
+                            width: 120.0,
+                            height: 120.0,
+                          ),
+                        ))),
           ),
         ]),
       ),
