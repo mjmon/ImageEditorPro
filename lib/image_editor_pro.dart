@@ -138,6 +138,8 @@ class _ImageEditorProState extends State<ImageEditorPro> {
                 final file = File('$tempPath/$name.png');
                 await file.writeAsBytes(byteData.buffer.asUint8List(
                     byteData.offsetInBytes, byteData.lengthInBytes));
+
+                Navigator.pop(context, file);
               },
               child:
                   Text('Done', style: TextStyle(color: widget.foregroundColor)))
@@ -154,7 +156,7 @@ class _ImageEditorProState extends State<ImageEditorPro> {
                     _image,
                     height: height.toDouble(),
                     width: width.toDouble(),
-                    fit: BoxFit.cover,
+                    fit: BoxFit.contain,
                   ),
                 Container(
                   padding: EdgeInsets.all(0.0),
