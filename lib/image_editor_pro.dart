@@ -1,7 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:typed_data';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -18,7 +16,9 @@ import 'package:signature/signature.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'dart:ui' as ui;
+import 'package:uuid/uuid.dart';
 
+final uuid = Uuid();
 TextEditingController heightcontroler = TextEditingController();
 TextEditingController widthcontroler = TextEditingController();
 var width = 400;
@@ -133,9 +133,11 @@ class _ImageEditorProState extends State<ImageEditorPro> {
                 final image = await boundary.toImage();
                 final byteData =
                     await image.toByteData(format: ui.ImageByteFormat.png);
-                final pngBytes = byteData.buffer.asUint8List();
-
-                final file = File.fromRawPath(pngBytes);
+                final tempPath = (await getTemporaryDirectory()).path;
+                final name = 'profile_${uuid.v1()}';
+                final file = File('$tempPath/$name.png');
+                await file.writeAsBytes(byteData.buffer.asUint8List(
+                    byteData.offsetInBytes, byteData.lengthInBytes));
 
                 Navigator.pop(context, file);
 
