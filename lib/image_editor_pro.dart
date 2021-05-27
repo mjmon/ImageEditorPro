@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_editor_pro/modules/sliders.dart';
@@ -15,6 +17,7 @@ import 'package:screenshot/screenshot.dart';
 import 'package:signature/signature.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'dart:ui' as ui;
 
 TextEditingController heightcontroler = TextEditingController();
 TextEditingController widthcontroler = TextEditingController();
@@ -65,7 +68,7 @@ class _ImageEditorProState extends State<ImageEditorPro> {
   List aligment = [];
 
   final GlobalKey container = GlobalKey();
-  final GlobalKey globalKey = GlobalKey();
+  final GlobalKey repaintKey = GlobalKey();
   File _image;
   ScreenshotController screenshotController = ScreenshotController();
   Timer timeprediction;
@@ -123,26 +126,36 @@ class _ImageEditorProState extends State<ImageEditorPro> {
             },
           ),
           TextButton(
-              onPressed: () {
-                screenshotController
-                    .capture(
-                  delay: Duration(milliseconds: 500),
-                  // pixelRatio: 1.5
-                )
-                    .then((binaryIntList) async {
-                  //print("Capture Done");
+              onPressed: () async {
+                RenderRepaintBoundary boundary =
+                    repaintKey.currentContext.findRenderObject();
 
-                  // final paths = await getDownloadsDirectory();
-                  final paths = await getTemporaryDirectory();
+                final image = await boundary.toImage();
+                final byteData =
+                    await image.toByteData(format: ui.ImageByteFormat.png);
+                final pngBytes = byteData.buffer.asUint8List();
 
-                  final file = await File(
-                          '${paths.path}/' + DateTime.now().toString() + '.jpg')
-                      .create();
-                  file.writeAsBytesSync(binaryIntList);
-                  Navigator.pop(context, file);
-                }).catchError((onError) {
-                  print('Done catchError: $onError');
-                });
+                final file = File.fromRawPath(pngBytes);
+
+                return file;
+
+                // screenshotController
+                //     .capture(
+                //         delay: Duration(milliseconds: 500), pixelRatio: 1.5)
+                //     .then((binaryIntList) async {
+                //   //print("Capture Done");
+
+                //   // final paths = await getDownloadsDirectory();
+                //   final paths = await getTemporaryDirectory();
+
+                //   final file = await File(
+                //           '${paths.path}/' + DateTime.now().toString() + '.jpg')
+                //       .create();
+                //   file.writeAsBytesSync(binaryIntList);
+                //   Navigator.pop(context, file);
+                // }).catchError((onError) {
+                //   print('Done catchError: $onError');
+                // });
               },
               child:
                   Text('Done', style: TextStyle(color: widget.foregroundColor)))
@@ -152,7 +165,7 @@ class _ImageEditorProState extends State<ImageEditorPro> {
         child: Screenshot(
             controller: screenshotController,
             child: RepaintBoundary(
-              key: globalKey,
+              key: repaintKey,
               child: Stack(alignment: AlignmentDirectional.center, children: [
                 if (_image != null)
                   Image.file(
