@@ -18,10 +18,10 @@ import 'dart:ui' as ui;
 import 'package:uuid/uuid.dart';
 
 final uuid = Uuid();
-TextEditingController heightcontroler = TextEditingController();
-TextEditingController widthcontroler = TextEditingController();
-var width = 400;
-var height = 400;
+// TextEditingController heightcontroler = TextEditingController();
+// TextEditingController widthcontroler = TextEditingController();
+// var width = 400;
+// var height = 400;
 
 List fontsize = [];
 var howmuchwidgetis = 0;
@@ -103,6 +103,7 @@ class _ImageEditorProState extends State<ImageEditorPro> {
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
     return Scaffold(
       key: scaf,
       backgroundColor: Colors.grey,
@@ -144,7 +145,6 @@ class _ImageEditorProState extends State<ImageEditorPro> {
         ],
       ),
       body: Container(
-        color: Colors.red,
         child: Center(
           child: RepaintBoundary(
             key: repaintKey,
@@ -155,8 +155,8 @@ class _ImageEditorProState extends State<ImageEditorPro> {
                   if (_image != null)
                     Image.file(
                       _image,
-                      height: height.toDouble(),
-                      width: width.toDouble(),
+                      height: screenSize.height,
+                      width: screenSize.width,
                       fit: BoxFit.contain,
                     ),
                   Container(
@@ -405,13 +405,14 @@ class _SignatState extends State<Signat> {
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
     return ListView(
       shrinkWrap: true,
       children: [
         Signature(
             controller: _controller,
-            height: height.toDouble(),
-            width: width.toDouble(),
+            height: screenSize.height,
+            width: screenSize.width,
             backgroundColor: Colors.transparent),
       ],
     );
