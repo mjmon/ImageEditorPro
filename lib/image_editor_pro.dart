@@ -137,7 +137,7 @@ class _ImageEditorProState extends State<ImageEditorPro> {
 
                 final file = File.fromRawPath(pngBytes);
 
-                return file;
+                Navigator.pop(context, file);
 
                 // screenshotController
                 //     .capture(
