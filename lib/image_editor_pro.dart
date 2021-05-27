@@ -11,7 +11,6 @@ import 'package:image_editor_pro/modules/all_emojies.dart';
 import 'package:image_editor_pro/modules/emoji.dart';
 import 'package:image_editor_pro/modules/textview.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:screenshot/screenshot.dart';
 import 'package:signature/signature.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
