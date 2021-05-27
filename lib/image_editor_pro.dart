@@ -126,7 +126,9 @@ class _ImageEditorProState extends State<ImageEditorPro> {
               onPressed: () {
                 screenshotController
                     .capture(
-                        delay: Duration(milliseconds: 500), pixelRatio: 1.5)
+                  delay: Duration(milliseconds: 500),
+                  // pixelRatio: 1.5
+                )
                     .then((binaryIntList) async {
                   //print("Capture Done");
 
