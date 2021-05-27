@@ -172,57 +172,57 @@ class _ImageEditorProState extends State<ImageEditorPro> {
                     },
                     child: Signat()),
               ),
-              Stack(children: [
-                ...multiwidget.asMap().entries.map((f) {
-                  return type[f.key] == 1
-                      ? EmojiView(
-                          left: offsets[f.key].dx,
-                          top: offsets[f.key].dy,
-                          ontap: () {
-                            scaf.currentState.showBottomSheet((context) {
-                              return Sliders(
-                                size: f.key,
-                                sizevalue: fontsize[f.key].toDouble(),
-                              );
-                            });
-                          },
-                          onpanupdate: (details) {
-                            setState(() {
-                              offsets[f.key] = Offset(
-                                  offsets[f.key].dx + details.delta.dx,
-                                  offsets[f.key].dy + details.delta.dy);
-                            });
-                          },
-                          value: f.value.toString(),
-                          fontsize: fontsize[f.key].toDouble(),
-                          align: TextAlign.center,
-                        )
-                      : type[f.key] == 2
-                          ? TextView(
-                              left: offsets[f.key].dx,
-                              top: offsets[f.key].dy,
-                              ontap: () {
-                                scaf.currentState.showBottomSheet((context) {
-                                  return Sliders(
-                                    size: f.key,
-                                    sizevalue: fontsize[f.key].toDouble(),
-                                  );
-                                });
-                              },
-                              onpanupdate: (details) {
-                                setState(() {
-                                  offsets[f.key] = Offset(
-                                      offsets[f.key].dx + details.delta.dx,
-                                      offsets[f.key].dy + details.delta.dy);
-                                });
-                              },
-                              value: f.value.toString(),
-                              fontsize: fontsize[f.key].toDouble(),
-                              align: TextAlign.center,
-                            )
-                          : Container();
-                })
-              ])
+              // Stack(children: [
+              //   ...multiwidget.asMap().entries.map((f) {
+              //     return type[f.key] == 1
+              //         ? EmojiView(
+              //             left: offsets[f.key].dx,
+              //             top: offsets[f.key].dy,
+              //             ontap: () {
+              //               scaf.currentState.showBottomSheet((context) {
+              //                 return Sliders(
+              //                   size: f.key,
+              //                   sizevalue: fontsize[f.key].toDouble(),
+              //                 );
+              //               });
+              //             },
+              //             onpanupdate: (details) {
+              //               setState(() {
+              //                 offsets[f.key] = Offset(
+              //                     offsets[f.key].dx + details.delta.dx,
+              //                     offsets[f.key].dy + details.delta.dy);
+              //               });
+              //             },
+              //             value: f.value.toString(),
+              //             fontsize: fontsize[f.key].toDouble(),
+              //             align: TextAlign.center,
+              //           )
+              //         : type[f.key] == 2
+              //             ? TextView(
+              //                 left: offsets[f.key].dx,
+              //                 top: offsets[f.key].dy,
+              //                 ontap: () {
+              //                   scaf.currentState.showBottomSheet((context) {
+              //                     return Sliders(
+              //                       size: f.key,
+              //                       sizevalue: fontsize[f.key].toDouble(),
+              //                     );
+              //                   });
+              //                 },
+              //                 onpanupdate: (details) {
+              //                   setState(() {
+              //                     offsets[f.key] = Offset(
+              //                         offsets[f.key].dx + details.delta.dx,
+              //                         offsets[f.key].dy + details.delta.dy);
+              //                   });
+              //                 },
+              //                 value: f.value.toString(),
+              //                 fontsize: fontsize[f.key].toDouble(),
+              //                 align: TextAlign.center,
+              //               )
+              //             : Container();
+              //   })
+              // ])
             ]),
           ),
         ),
