@@ -138,26 +138,6 @@ class _ImageEditorProState extends State<ImageEditorPro> {
                 final file = File('$tempPath/$name.png');
                 await file.writeAsBytes(byteData.buffer.asUint8List(
                     byteData.offsetInBytes, byteData.lengthInBytes));
-
-                Navigator.pop(context, file);
-
-                // screenshotController
-                //     .capture(
-                //         delay: Duration(milliseconds: 500), pixelRatio: 1.5)
-                //     .then((binaryIntList) async {
-                //   //print("Capture Done");
-
-                //   // final paths = await getDownloadsDirectory();
-                //   final paths = await getTemporaryDirectory();
-
-                //   final file = await File(
-                //           '${paths.path}/' + DateTime.now().toString() + '.jpg')
-                //       .create();
-                //   file.writeAsBytesSync(binaryIntList);
-                //   Navigator.pop(context, file);
-                // }).catchError((onError) {
-                //   print('Done catchError: $onError');
-                // });
               },
               child:
                   Text('Done', style: TextStyle(color: widget.foregroundColor)))
