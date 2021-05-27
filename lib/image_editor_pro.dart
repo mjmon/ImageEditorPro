@@ -128,7 +128,7 @@ class _ImageEditorProState extends State<ImageEditorPro> {
                 RenderRepaintBoundary boundary =
                     repaintKey.currentContext.findRenderObject();
 
-                final image = await boundary.toImage();
+                final image = await boundary.toImage(pixelRatio: 0.8);
                 final byteData =
                     await image.toByteData(format: ui.ImageByteFormat.png);
                 final tempPath = (await getTemporaryDirectory()).path;
@@ -148,82 +148,86 @@ class _ImageEditorProState extends State<ImageEditorPro> {
         child: Center(
           child: RepaintBoundary(
             key: repaintKey,
-            child: Stack(alignment: AlignmentDirectional.center, children: [
-              if (_image != null)
-                Image.file(
-                  _image,
-                  height: height.toDouble(),
-                  width: width.toDouble(),
-                  fit: BoxFit.contain,
-                ),
-              Container(
-                padding: EdgeInsets.all(0.0),
-                child: GestureDetector(
-                    onPanUpdate: (DragUpdateDetails details) {
-                      setState(() {
-                        RenderBox object = context.findRenderObject();
-                        var _localPosition =
-                            object.globalToLocal(details.globalPosition);
-                        _points = List.from(_points)..add(_localPosition);
-                      });
-                    },
-                    onPanEnd: (DragEndDetails details) {
-                      _points.add(null);
-                    },
-                    child: Signat()),
-              ),
-              // Stack(children: [
-              //   ...multiwidget.asMap().entries.map((f) {
-              //     return type[f.key] == 1
-              //         ? EmojiView(
-              //             left: offsets[f.key].dx,
-              //             top: offsets[f.key].dy,
-              //             ontap: () {
-              //               scaf.currentState.showBottomSheet((context) {
-              //                 return Sliders(
-              //                   size: f.key,
-              //                   sizevalue: fontsize[f.key].toDouble(),
-              //                 );
-              //               });
-              //             },
-              //             onpanupdate: (details) {
-              //               setState(() {
-              //                 offsets[f.key] = Offset(
-              //                     offsets[f.key].dx + details.delta.dx,
-              //                     offsets[f.key].dy + details.delta.dy);
-              //               });
-              //             },
-              //             value: f.value.toString(),
-              //             fontsize: fontsize[f.key].toDouble(),
-              //             align: TextAlign.center,
-              //           )
-              //         : type[f.key] == 2
-              //             ? TextView(
-              //                 left: offsets[f.key].dx,
-              //                 top: offsets[f.key].dy,
-              //                 ontap: () {
-              //                   scaf.currentState.showBottomSheet((context) {
-              //                     return Sliders(
-              //                       size: f.key,
-              //                       sizevalue: fontsize[f.key].toDouble(),
-              //                     );
-              //                   });
-              //                 },
-              //                 onpanupdate: (details) {
-              //                   setState(() {
-              //                     offsets[f.key] = Offset(
-              //                         offsets[f.key].dx + details.delta.dx,
-              //                         offsets[f.key].dy + details.delta.dy);
-              //                   });
-              //                 },
-              //                 value: f.value.toString(),
-              //                 fontsize: fontsize[f.key].toDouble(),
-              //                 align: TextAlign.center,
-              //               )
-              //             : Container();
-              //   })
-              // ])
-            ]),
+            child: Stack(
+                clipBehavior: Clip.none,
+                alignment: AlignmentDirectional.center,
+                children: [
+                  if (_image != null)
+                    Image.file(
+                      _image,
+                      height: height.toDouble(),
+                      width: width.toDouble(),
+                      fit: BoxFit.contain,
+                    ),
+                  Container(
+                    padding: EdgeInsets.all(0.0),
+                    child: GestureDetector(
+                        onPanUpdate: (DragUpdateDetails details) {
+                          setState(() {
+                            RenderBox object = context.findRenderObject();
+                            var _localPosition =
+                                object.globalToLocal(details.globalPosition);
+                            _points = List.from(_points)..add(_localPosition);
+                          });
+                        },
+                        onPanEnd: (DragEndDetails details) {
+                          _points.add(null);
+                        },
+                        child: Signat()),
+                  ),
+                  Stack(children: [
+                    ...multiwidget.asMap().entries.map((f) {
+                      return type[f.key] == 1
+                          ? EmojiView(
+                              left: offsets[f.key].dx,
+                              top: offsets[f.key].dy,
+                              ontap: () {
+                                scaf.currentState.showBottomSheet((context) {
+                                  return Sliders(
+                                    size: f.key,
+                                    sizevalue: fontsize[f.key].toDouble(),
+                                  );
+                                });
+                              },
+                              onpanupdate: (details) {
+                                setState(() {
+                                  offsets[f.key] = Offset(
+                                      offsets[f.key].dx + details.delta.dx,
+                                      offsets[f.key].dy + details.delta.dy);
+                                });
+                              },
+                              value: f.value.toString(),
+                              fontsize: fontsize[f.key].toDouble(),
+                              align: TextAlign.center,
+                            )
+                          : type[f.key] == 2
+                              ? TextView(
+                                  left: offsets[f.key].dx,
+                                  top: offsets[f.key].dy,
+                                  ontap: () {
+                                    scaf.currentState
+                                        .showBottomSheet((context) {
+                                      return Sliders(
+                                        size: f.key,
+                                        sizevalue: fontsize[f.key].toDouble(),
+                                      );
+                                    });
+                                  },
+                                  onpanupdate: (details) {
+                                    setState(() {
+                                      offsets[f.key] = Offset(
+                                          offsets[f.key].dx + details.delta.dx,
+                                          offsets[f.key].dy + details.delta.dy);
+                                    });
+                                  },
+                                  value: f.value.toString(),
+                                  fontsize: fontsize[f.key].toDouble(),
+                                  align: TextAlign.center,
+                                )
+                              : Container();
+                    })
+                  ])
+                ]),
           ),
         ),
       ),
