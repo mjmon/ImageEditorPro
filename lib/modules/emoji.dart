@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
 class EmojiView extends StatefulWidget {
-  final double left;
-  final double top;
-  final Function ontap;
-  final Function(DragUpdateDetails) onpanupdate;
-  final double fontsize;
-  final String value;
-  final TextAlign align;
+  final double? left;
+  final double? top;
+  final Function()? ontap;
+  final Function(DragUpdateDetails)? onpanupdate;
+  final double? fontsize;
+  final String? value;
+  final TextAlign? align;
   const EmojiView(
-      {Key key,
+      {Key? key,
       this.left,
       this.top,
       this.ontap,
@@ -31,7 +31,7 @@ class _EmojiViewState extends State<EmojiView> {
       child: GestureDetector(
         onTap: widget.ontap,
         onPanUpdate: widget.onpanupdate,
-        child: Text(widget.value,
+        child: Text(widget.value!,
             textAlign: widget.align,
             style: TextStyle(
               fontSize: widget.fontsize,

@@ -1,12 +1,11 @@
-
 import 'package:flutter/material.dart';
 
 import '../image_editor_pro.dart';
 
 class Sliders extends StatefulWidget {
-  final int size;
+  final int? size;
   final sizevalue;
-  const Sliders({Key key, this.size, this.sizevalue}) : super(key: key);
+  const Sliders({Key? key, this.size, this.sizevalue}) : super(key: key);
   @override
   _SlidersState createState() => _SlidersState();
 }
@@ -36,14 +35,14 @@ class _SlidersState extends State<Sliders> {
               max: 100.0,
               onChangeEnd: (v) {
                 setState(() {
-                  fontsize[widget.size] = v.toInt();
+                  fontsize[widget.size!] = v.toInt();
                 });
               },
               onChanged: (v) {
                 setState(() {
                   slider = v;
                   print(v.toInt());
-                  fontsize[widget.size] = v.toInt();
+                  fontsize[widget.size!] = v.toInt();
                 });
               }),
         ],

@@ -35,9 +35,9 @@ class ImageEditorPro extends StatefulWidget {
   final Color foregroundColor;
   final File passedImage;
   ImageEditorPro(
-      {@required this.backgroundColor,
-      @required this.foregroundColor,
-      @required this.passedImage});
+      {required this.backgroundColor,
+      required this.foregroundColor,
+      required this.passedImage});
 
   @override
   _ImageEditorProState createState() => _ImageEditorProState();
@@ -68,8 +68,8 @@ class _ImageEditorProState extends State<ImageEditorPro> {
 
   final GlobalKey container = GlobalKey();
   final GlobalKey repaintKey = GlobalKey();
-  File _image;
-  Timer timeprediction;
+  File? _image;
+  Timer? timeprediction;
 
   int _activeTab = 0;
 
@@ -82,7 +82,7 @@ class _ImageEditorProState extends State<ImageEditorPro> {
 
   @override
   void dispose() {
-    timeprediction.cancel();
+    timeprediction!.cancel();
 
     super.dispose();
   }
@@ -126,8 +126,9 @@ class _ImageEditorProState extends State<ImageEditorPro> {
           ),
           TextButton(
               onPressed: () async {
-                RenderRepaintBoundary boundary =
-                    repaintKey.currentContext.findRenderObject();
+                var boundary = repaintKey.currentContext!.findRenderObject()
+                    as RenderRepaintBoundary;
+                ;
 
                 final image = await boundary.toImage(pixelRatio: 0.8);
                 final byteData =
@@ -135,7 +136,7 @@ class _ImageEditorProState extends State<ImageEditorPro> {
                 final tempPath = (await getTemporaryDirectory()).path;
                 final name = 'profile_${uuid.v1()}';
                 final file = File('$tempPath/$name.png');
-                await file.writeAsBytes(byteData.buffer.asUint8List(
+                await file.writeAsBytes(byteData!.buffer.asUint8List(
                     byteData.offsetInBytes, byteData.lengthInBytes));
 
                 Navigator.pop(context, file);
@@ -154,7 +155,7 @@ class _ImageEditorProState extends State<ImageEditorPro> {
                 children: [
                   if (_image != null)
                     Image.file(
-                      _image,
+                      _image!,
                       height: screenSize.height,
                       width: screenSize.width,
                       fit: BoxFit.contain,
@@ -164,14 +165,16 @@ class _ImageEditorProState extends State<ImageEditorPro> {
                     child: GestureDetector(
                         onPanUpdate: (DragUpdateDetails details) {
                           setState(() {
-                            RenderBox object = context.findRenderObject();
+                            final object =
+                                context.findRenderObject() as RenderBox;
+                            // RenderBox object = context.findRenderObject();
                             var _localPosition =
                                 object.globalToLocal(details.globalPosition);
                             _points = List.from(_points)..add(_localPosition);
                           });
                         },
                         onPanEnd: (DragEndDetails details) {
-                          _points.add(null);
+                          _points.add(Offset(0, 0));
                         },
                         child: Signat()),
                   ),
@@ -182,7 +185,7 @@ class _ImageEditorProState extends State<ImageEditorPro> {
                               left: offsets[f.key].dx,
                               top: offsets[f.key].dy,
                               ontap: () {
-                                scaf.currentState.showBottomSheet((context) {
+                                scaf.currentState!.showBottomSheet((context) {
                                   return Sliders(
                                     size: f.key,
                                     sizevalue: fontsize[f.key].toDouble(),
@@ -205,7 +208,7 @@ class _ImageEditorProState extends State<ImageEditorPro> {
                                   left: offsets[f.key].dx,
                                   top: offsets[f.key].dy,
                                   ontap: () {
-                                    scaf.currentState
+                                    scaf.currentState!
                                         .showBottomSheet((context) {
                                       return Sliders(
                                         size: f.key,
@@ -353,7 +356,7 @@ class _ImageEditorProState extends State<ImageEditorPro> {
 
   Future<Null> _cropImage() async {
     var croppedFile = await ImageCropper.cropImage(
-        sourcePath: _image.path,
+        sourcePath: _image!.path,
         aspectRatioPresets: Platform.isAndroid
             ? [
                 CropAspectRatioPreset.square,

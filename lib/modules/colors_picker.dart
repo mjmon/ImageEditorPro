@@ -49,7 +49,7 @@ class BarColorPicker extends StatefulWidget {
   final Color initialColor;
 
   BarColorPicker({
-    Key key,
+    Key? key,
     this.pickMode = PickMode.Color,
     this.horizontal = true,
     this.width = 200,
@@ -57,14 +57,8 @@ class BarColorPicker extends StatefulWidget {
     this.thumbRadius = 8,
     this.initialColor = const Color(0xffff0000),
     this.thumbColor = Colors.black,
-    @required this.colorListener,
-  })  : assert(pickMode != null),
-        assert(horizontal != null),
-        assert(width != null),
-        assert(cornerRadius != null),
-        assert(colorListener != null),
-        assert(initialColor != null),
-        super(key: key);
+    required this.colorListener,
+  }) : super(key: key);
 
   @override
   _BarColorPickerState createState() => _BarColorPickerState();
@@ -72,8 +66,8 @@ class BarColorPicker extends StatefulWidget {
 
 class _BarColorPickerState extends State<BarColorPicker> {
   double percent = 0.0;
-  List<Color> colors;
-  double barWidth, barHeight;
+  late List<Color> colors;
+  late double barWidth, barHeight;
 
   @override
   void initState() {
@@ -109,7 +103,7 @@ class _BarColorPickerState extends State<BarColorPicker> {
     final thumbRadius = widget.thumbRadius;
     final horizontal = widget.horizontal;
 
-    double thumbLeft, thumbTop;
+    late double thumbLeft, thumbTop;
     if (horizontal) {
       thumbLeft = barWidth * percent;
     } else {
@@ -175,7 +169,6 @@ class _BarColorPickerState extends State<BarColorPicker> {
       top = thumbRadius;
     }
 
-
     var content = Positioned(
       left: left,
       top: top,
@@ -198,7 +191,7 @@ class _BarColorPickerState extends State<BarColorPicker> {
 
   /// calculate colors picked from palette and update our states.
   void handleTouch(Offset globalPosition, BuildContext context) {
-    RenderBox box = context.findRenderObject();
+    var box = context.findRenderObject() as RenderBox;
     var localPosition = box.globalToLocal(globalPosition);
     double percent;
     if (widget.horizontal) {
@@ -243,16 +236,13 @@ class CircleColorPicker extends StatefulWidget {
   final Color initialColor;
 
   CircleColorPicker(
-      {Key key,
+      {Key? key,
       this.radius = 120,
       this.initialColor = const Color(0xffff0000),
       this.thumbColor = Colors.black,
       this.thumbRadius = 8,
-      @required this.colorListener})
-      : assert(radius != null),
-        assert(thumbColor != null),
-        assert(colorListener != null),
-        super(key: key);
+      required this.colorListener})
+      : super(key: key);
 
   @override
   State<CircleColorPicker> createState() {
@@ -271,8 +261,8 @@ class _CircleColorPickerState extends State<CircleColorPicker> {
     Color(0xffff0000)
   ];
 
-  double thumbDistanceToCenter;
-  double thumbRadians;
+  late double thumbDistanceToCenter;
+  late double thumbRadians;
 
   @override
   void initState() {
@@ -291,7 +281,6 @@ class _CircleColorPickerState extends State<CircleColorPicker> {
     final thumbCenterX = radius + thumbDistanceToCenter * sin(thumbRadians);
     final thumbCenterY = radius + thumbDistanceToCenter * cos(thumbRadians);
 
-
     Widget thumb = Positioned(
         left: thumbCenterX,
         top: thumbCenterY,
@@ -309,7 +298,6 @@ class _CircleColorPickerState extends State<CircleColorPicker> {
               borderRadius: BorderRadius.circular(thumbRadius)),
           child: Padding(padding: EdgeInsets.zero),
         ));
-
 
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
@@ -338,7 +326,7 @@ class _CircleColorPickerState extends State<CircleColorPicker> {
 
   /// calculate colors picked from palette and update our states.
   void handleTouch(Offset globalPosition, BuildContext context) {
-    RenderBox box = context.findRenderObject();
+    var box = context.findRenderObject() as RenderBox;
     var localPosition = box.globalToLocal(globalPosition);
     final centerX = box.size.width / 2;
     final centerY = box.size.height / 2;

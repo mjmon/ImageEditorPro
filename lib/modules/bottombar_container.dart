@@ -1,15 +1,19 @@
-
 import 'package:flutter/material.dart';
 
 class BottomBarContainer extends StatelessWidget {
-  final Color bgColor;
-  final Color fgColor;
-  final Function ontap;
-  final String title;
-  final IconData icons;
+  final Color? bgColor;
+  final Color? fgColor;
+  final Function()? ontap;
+  final String? title;
+  final IconData? icons;
 
   const BottomBarContainer(
-      {Key key, this.ontap, this.title, this.icons, this.bgColor, this.fgColor})
+      {Key? key,
+      this.ontap,
+      this.title,
+      this.icons,
+      this.bgColor,
+      this.fgColor})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -27,10 +31,9 @@ class BottomBarContainer extends StatelessWidget {
                       color: fgColor ?? Colors.white,
                     ),
                     SizedBox(height: 4),
-                    Text(title,
+                    Text(title!,
                         style: TextStyle(color: fgColor ?? Colors.white))
                   ],
                 ))));
-
   }
 }
