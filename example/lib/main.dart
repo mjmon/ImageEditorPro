@@ -20,8 +20,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  File _pickedImage;
-  File _editedImage;
+  File? _pickedImage;
+  File? _editedImage;
 
   Future<void> getimageditor() async {
     final imageResult =
@@ -29,7 +29,7 @@ class _HomePageState extends State<HomePage> {
       return ImageEditorPro(
         backgroundColor: Color(0xff11A0BF),
         foregroundColor: Colors.white,
-        passedImage: _pickedImage,
+        passedImage: _pickedImage!,
       );
     }));
 
@@ -54,7 +54,7 @@ class _HomePageState extends State<HomePage> {
                 color: Colors.amber,
                 child: _pickedImage == null
                     ? Text('No Picked Image')
-                    : Image.file(_pickedImage)),
+                    : Image.file(_pickedImage!)),
           ),
           Expanded(
             child: Container(
@@ -71,7 +71,7 @@ class _HomePageState extends State<HomePage> {
                         backgroundColor: Colors.transparent,
                         child: ClipOval(
                           child: Image.file(
-                            _editedImage,
+                            _editedImage!,
                             fit: BoxFit.cover,
                             width: 120.0,
                             height: 120.0,

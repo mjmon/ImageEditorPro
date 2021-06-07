@@ -3,7 +3,7 @@ description: Demonstrates how to use the image_editor_pro plugin.
 publish_to: 'none'
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -19,9 +19,6 @@ dev_dependencies:
   image_editor_pro:
     path: ../
 
-dependency_overrides:
-  collection: 1.14.13
-  _fe_analyzer_shared: 10.0.0
 
 
 
