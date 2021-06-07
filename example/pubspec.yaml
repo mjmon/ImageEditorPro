@@ -2,6 +2,8 @@ name: image_editor_pro_example
 description: Demonstrates how to use the image_editor_pro plugin.
 publish_to: 'none'
 
+version: 1.0.1+1
+
 environment:
   sdk: ">=2.12.0 <3.0.0"
 
